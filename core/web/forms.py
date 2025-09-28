@@ -2,7 +2,7 @@ from decimal import InvalidOperation, Decimal
 from django import forms
 from django.core.exceptions import ValidationError
 
-from .models import Subcategory, Category, CashFlowRecord
+from .models import Subcategory, Category, CashFlowRecord, Status, TransactionType
 
 
 class CashFlowRecordForm(forms.ModelForm):
@@ -86,3 +86,54 @@ class CashFlowRecordForm(forms.ModelForm):
             raise ValidationError('Сумма должна быть положительным числом')
 
         return amount
+
+
+# Формы для справочников
+class StatusForm(forms.ModelForm):
+    """Форма статуса"""
+    class Meta:
+        model = Status
+        fields = ['name']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+
+class TransactionTypeForm(forms.ModelForm):
+    """Форма типа транзакции"""
+    class Meta:
+        model = TransactionType
+        fields = ['name']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+
+class CategoryForm(forms.ModelForm):
+    """Форма категории"""
+    class Meta:
+        model = Category
+        fields = ['name', 'transaction_type']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'transaction_type': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+
+class SubcategoryForm(forms.ModelForm):
+    """Форма подкатегории"""
+    class Meta:
+        model = Subcategory
+        fields = ['name', 'category']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'category': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Для существующей записи ограничиваем выбор категорий
+        if self.instance and self.instance.pk and self.instance.category:
+            self.fields['category'].queryset = Category.objects.filter(
+                transaction_type=self.instance.category.transaction_type
+            )

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}{{ title }}{% endblock %}
 
@@ -9,8 +10,8 @@
     <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="mb-0">Список {{ title|lower }}</h5>
         <div>
-            <!-- Исправляем URL для кнопки "Добавить" -->
-            <a href="/admin/web/{{ model_name }}/add/" class="btn btn-success btn-sm">
+            <!-- Используем переданные из вьюхи URL -->
+            <a href="{% url create_url %}" class="btn btn-success btn-sm">
                 <i class="bi bi-plus-circle"></i> Добавить
             </a>
             <a href="{% url 'cash_flow:dictionary_manage' %}" class="btn btn-secondary btn-sm">
@@ -25,6 +26,12 @@
                 <thead>
                     <tr>
                         <th>Название</th>
+                        {% if model_name == 'category' %}
+                        <th>Тип операции</th>
+                        {% elif model_name == 'subcategory' %}
+                        <th>Категория</th>
+                        <th>Тип операции</th>
+                        {% endif %}
                         <th>Количество записей</th>
                         <th>Действия</th>
                     </tr>
@@ -33,6 +40,12 @@
                     {% for item in items %}
                     <tr>
                         <td>{{ item.name }}</td>
+                        {% if model_name == 'category' %}
+                        <td>{{ item.transaction_type.name }}</td>
+                        {% elif model_name == 'subcategory' %}
+                        <td>{{ item.category.name }}</td>
+                        <td>{{ item.category.transaction_type.name }}</td>
+                        {% endif %}
                         <td>
                             <span class="badge bg-primary">
                                 {% if model_name == 'status' %}
@@ -47,12 +60,12 @@
                             </span>
                         </td>
                         <td>
-                            <!-- Исправляем URL для кнопок редактирования и удаления -->
-                            <a href="/admin/web/{{ model_name }}/{{ item.id }}/change/"
+                            <!-- Используем переданные из вьюхи URL для редактирования и удаления -->
+                            <a href="{% url edit_url item.pk %}"
                                class="btn btn-warning btn-sm" title="Редактировать">
                                 <i class="bi bi-pencil"></i>
                             </a>
-                            <a href="/admin/web/{{ model_name }}/{{ item.id }}/delete/"
+                            <a href="{% url delete_url item.pk %}"
                                class="btn btn-danger btn-sm confirm-delete" title="Удалить">
                                 <i class="bi bi-trash"></i>
                             </a>
@@ -63,7 +76,9 @@
             </table>
         </div>
         {% else %}
-        <p class="text-center">Нет данных</p>
+        <div class="alert alert-info text-center">
+            <i class="bi bi-info-circle"></i> Нет данных для отображения
+        </div>
         {% endif %}
     </div>
 </div>
