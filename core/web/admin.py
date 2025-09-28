@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.http import JsonResponse
 from django.urls import path, reverse
-from django.utils.html import format_html
 from .models import Status, TransactionType, Category, Subcategory, CashFlowRecord
 from .admin_forms import CashFlowRecordAdminForm
 

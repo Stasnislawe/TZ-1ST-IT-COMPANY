@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from decimal import Decimal, InvalidOperation
 from .models import CashFlowRecord, Category, Subcategory
 
+
 class CashFlowRecordAdminForm(forms.ModelForm):
     """Форма для админки с динамической загрузкой категорий"""
 

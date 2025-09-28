@@ -1,4 +1,3 @@
-from django.db import connection
 from django.db.models.functions import ExtractMonth, ExtractYear
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
