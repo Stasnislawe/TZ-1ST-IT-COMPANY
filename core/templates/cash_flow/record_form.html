@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block page_title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" id="record-form" novalidate>
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                    {% endif %}
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="id_created_date" class="form-label">Дата создания *</label>
+                            <input type="date" name="created_date"
+                                   value="{% if form.created_date.value %}{{ form.created_date.value|date:'Y-m-d' }}{% else %}{{ form.created_date.initial|date:'Y-m-d' }}{% endif %}"
+                                   class="form-control {% if form.created_date.errors %}is-invalid{% endif %}"
+                                   id="id_created_date" required>
+                            {% for error in form.created_date.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="id_status" class="form-label">Статус</label>
+                            <select name="status" class="form-control" id="id_status">
+                                <option value="">---------</option>
+                                {% for status in form.fields.status.queryset %}
+                                <option value="{{ status.id }}"
+                                        {% if form.status.value == status.id|stringformat:"s" or form.status.initial == status.id or form.instance.status_id == status.id %}selected{% endif %}>
+                                    {{ status.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="id_transaction_type" class="form-label">Тип операции *</label>
+                            <select name="transaction_type"
+                                    class="form-control {% if form.transaction_type.errors %}is-invalid{% endif %}"
+                                    id="id_transaction_type" required>
+                                <option value="">---------</option>
+                                {% for type in form.fields.transaction_type.queryset %}
+                                <option value="{{ type.id }}"
+                                        {% if form.transaction_type.value == type.id|stringformat:"s" or form.transaction_type.initial == type.id or form.instance.transaction_type_id == type.id %}selected{% endif %}>
+                                    {{ type.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                            {% for error in form.transaction_type.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="id_category" class="form-label">Категория *</label>
+                            <select name="category"
+                                    class="form-control {% if form.category.errors %}is-invalid{% endif %}"
+                                    id="id_category" required>
+                                <option value="">---------</option>
+                                {% for category in form.fields.category.queryset %}
+                                <option value="{{ category.id }}"
+                                        {% if form.category.value == category.id|stringformat:"s" or form.category.initial == category.id or form.instance.category_id == category.id %}selected{% endif %}>
+                                    {{ category.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                            {% for error in form.category.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="id_subcategory" class="form-label">Подкатегория *</label>
+                            <select name="subcategory"
+                                    class="form-control {% if form.subcategory.errors %}is-invalid{% endif %}"
+                                    id="id_subcategory" required>
+                                <option value="">---------</option>
+                                {% for subcategory in form.fields.subcategory.queryset %}
+                                <option value="{{ subcategory.id }}"
+                                        {% if form.subcategory.value == subcategory.id|stringformat:"s" or form.subcategory.initial == subcategory.id or form.instance.subcategory_id == subcategory.id %}selected{% endif %}>
+                                    {{ subcategory.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                            {% for error in form.subcategory.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="id_amount" class="form-label">Сумма *</label>
+                            <input type="number" name="amount"
+                                   step="0.01" min="0.01"
+                                   value="{% if form.amount.value %}{{ form.amount.value }}{% else %}{{ form.amount.initial|default_if_none:'' }}{% endif %}"
+                                   class="form-control {% if form.amount.errors %}is-invalid{% endif %}"
+                                   id="id_amount" required>
+                            {% for error in form.amount.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-12">
+                            <label for="id_comment" class="form-label">Комментарий</label>
+                            <textarea name="comment" class="form-control" id="id_comment" rows="3">{% if form.comment.value %}{{ form.comment.value }}{% else %}{{ form.comment.initial|default_if_none:'' }}{% endif %}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            {% if form.instance.pk %}Сохранить изменения{% else %}Создать запись{% endif %}
+                        </button>
+                        <a href="{% url 'cash_flow:index' %}" class="btn btn-secondary">Отмена</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/dynamic_form.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,148 @@
+/* Общие стили */
+body {
+    background-color: #f8f9fa;
+}
+
+/* Навигация */
+.navbar-brand {
+    font-weight: 600;
+}
+
+/* Карточки */
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+/* Таблицы */
+.table th {
+    border-top: none;
+    font-weight: 600;
+    color: #495057;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.025);
+}
+
+/* Формы */
+.form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* Кнопки */
+.btn {
+    border-radius: 0.375rem;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* Иконки */
+.bi {
+    margin-right: 0.25rem;
+}
+
+/* Статусы записей */
+.status-badge {
+    padding: 0.35em 0.65em;
+    font-size: 0.75em;
+    font-weight: 600;
+}
+
+/* Суммы */
+tr td.amount-positive { color: green !important; }
+tr td.amount-negative { color: red !important; }
+
+/* Фильтры */
+.filter-section {
+    background-color: white;
+    border-radius: 0.375rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .table-responsive {
+        font-size: 0.875rem;
+    }
+
+    .btn-sm {
+        display: block;
+        margin-bottom: 0.25rem;
+    }
+}
+
+/* Загрузка */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Уведомления */
+.alert {
+    border: none;
+    border-radius: 0.375rem;
+}
+
+.alert-success {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    color: #664d03;
+}
+
+/* Стили для обязательных полей */
+.form-label .text-danger {
+    font-weight: bold;
+}
+
+/* Стили для невалидных полей */
+.is-invalid {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+.invalid-feedback {
+    display: block;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: #dc3545;
+}
+
+/* Подсказки для полей */
+.form-text {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+/* Выделение обязательных полей */
+.required-field {
+    border-left: 3px solid #0d6efd;
+    padding-left: 10px;
+}
